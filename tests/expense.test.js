@@ -105,3 +105,86 @@ test("should return only expenses from the requested category", async () => {
     expect(response.body[1].category).toBe("Food");
 
 });
+
+test("should calculate total expenses", async () => {
+
+    await request(app)
+        .post("/api/expenses")
+        .send({
+            title: "Pizza",
+            amount: 500,
+            category: "Food",
+            date: "2026-08-01"
+        });
+
+    await request(app)
+        .post("/api/expenses")
+        .send({
+            title: "Uber",
+            amount: 300,
+            category: "Travel",
+            date: "2026-08-01"
+        });
+
+    const response = await request(app)
+        .get("/api/expenses/total");
+
+    expect(response.statusCode).toBe(200);
+
+    expect(response.body.total).toBe(800);
+
+});
+
+test("should calculate total expenses for a category", async () => {
+
+    await request(app)
+        .post("/api/expenses")
+        .send({
+            title: "Pizza",
+            amount: 500,
+            category: "Food",
+            date: "2026-08-01"
+        });
+
+    await request(app)
+        .post("/api/expenses")
+        .send({
+            title: "Burger",
+            amount: 300,
+            category: "Food",
+            date: "2026-08-01"
+        });
+
+    await request(app)
+        .post("/api/expenses")
+        .send({
+            title: "Uber",
+            amount: 200,
+            category: "Travel",
+            date: "2026-08-01"
+        });
+
+    const response = await request(app)
+        .get("/api/expenses/total?category=Food");
+
+    expect(response.statusCode).toBe(200);
+
+    expect(response.body.total).toBe(800);
+
+});
+
+test("should return 400 when title is missing", async () => {
+
+    const response = await request(app)
+        .post("/api/expenses")
+        .send({
+            amount: 500,
+            category: "Food",
+            date: "2026-08-01"
+        });
+
+    expect(response.statusCode).toBe(400);
+
+    expect(response.body.message).toBe("Title is required");
+
+});
