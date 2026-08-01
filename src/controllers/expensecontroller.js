@@ -13,7 +13,11 @@ async function addexpense(req, res) {
 
 async function getAllExpenses(req, res) {
     try {
-        const expenses = await expenseservice.getAllExpenses();
+
+        const { category } = req.query;
+
+        const expenses =
+            await expenseservice.getAllExpenses(category);
 
         res.status(200).json(expenses);
 
@@ -26,7 +30,64 @@ async function getAllExpenses(req, res) {
     }
 }
 
+async function deleteExpense(req, res) {
+
+    try {
+
+        const id = Number(req.params.id);
+        if (Number.isNaN(id)) {
+            return res.status(400).json({
+            message: "Invalid expense ID"
+            });
+        }
+
+        const deleted =
+            await expenseservice.deleteExpense(id);
+
+        if (!deleted) {
+            return res.status(404).json({
+                message: "Expense not found"
+            });
+        }
+
+        res.status(204).send("Deleted Successfully");
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message
+        });
+
+    }
+
+}
+
+async function getTotalExpenses(req, res) {
+
+    try {
+
+        const { category } = req.query;
+
+        const total =
+            await expenseservice.getTotalExpenses(category);
+
+        res.status(200).json({
+            total
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message
+        });
+
+    }
+
+}
+
 module.exports = {
     addexpense,
-    getAllExpenses
+    getAllExpenses,
+    deleteExpense,
+    getTotalExpenses
 };

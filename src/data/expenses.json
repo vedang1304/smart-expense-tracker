@@ -5,5 +5,19 @@
     "amount": 500,
     "category": "Food",
     "date": "2026-08-01"
+  },
+  {
+    "id": 2,
+    "title": "Uber",
+    "amount": 1500,
+    "category": "Travel",
+    "date": "2026-08-07"
+  },
+  {
+    "id": 3,
+    "title": "Spider Man",
+    "amount": 850,
+    "category": "Movie",
+    "date": "2026-05-13"
   }
 ]

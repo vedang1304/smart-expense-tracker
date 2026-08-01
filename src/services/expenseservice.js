@@ -24,13 +24,64 @@ async function addexpense(expenseData) {
 
     return newExpense;
 }
-async function getAllExpenses() {
+async function getAllExpenses(category) {
 
-    return await readExpenses();
+    const expenses = await readExpenses();
+
+    if (!category) {
+        return expenses;
+    }
+
+    return expenses.filter(expense =>
+        expense.category.toLowerCase() === category.toLowerCase()
+    );
+
+}
+
+async function deleteExpense(id) {
+
+    const expenses = await readExpenses();
+
+    const index = expenses.findIndex(
+        expense => expense.id === id
+    );
+
+    if (index === -1) {
+        return false;
+    }
+
+    expenses.splice(index, 1);
+
+    await writeExpenses(expenses);
+
+    return true;
+
+}
+
+async function getTotalExpenses(category) {
+
+    const expenses = await readExpenses();
+
+    const filteredExpenses = category
+        ? expenses.filter(expense =>
+              expense.category.toLowerCase() ===
+              category.toLowerCase()
+          )
+        : expenses;
+
+    const total = filteredExpenses.reduce(
+        (sum, expense) => sum + expense.amount,
+        0
+    );
+
+    return total;
 
 }
 
 module.exports = {
     addexpense,
-    getAllExpenses
+    getAllExpenses,
+    deleteExpense,
+    getTotalExpenses
+
 };
