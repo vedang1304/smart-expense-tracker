@@ -54,7 +54,7 @@ async function deleteExpense(id) {
 
     await writeExpenses(expenses);
 
-    return true;
+    return "Deleted Successfully";
 
 }
 
