@@ -17,7 +17,7 @@ AI was used to help with:
 * Creating Swagger/OpenAPI documentation.
 * Creating the Dockerfile and `.dockerignore`.
 * Writing Jest and Supertest integration tests.
-* Preparing the README documentation.
+* Preparing the README documentation as well the AI readme.
 * Explaining JavaScript concepts such as `reduce()`, `filter()`, `findIndex()`.
 
 ### Implemented and Integrated by Me
